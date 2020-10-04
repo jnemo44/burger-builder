@@ -10,6 +10,7 @@ const burger = ( props ) => {
                 return <BurgerIngredient key={igKey + i} type={igKey} />;
             } );
         } )
+        // arr (always updated root array) el(current element)
         .reduce((arr, el) => {
             return arr.concat(el)
         }, []);
