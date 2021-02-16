@@ -23,9 +23,9 @@ class Checkout extends Component {
                 // + sign turns into a number
                 ingredients[param[0]] = +param[1];
             }
-            
         }
         this.setState({ingredients: ingredients, totalPrice: price});
+        
     }
 
     checkoutCancelledHandler = () => {
