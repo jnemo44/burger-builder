@@ -49,31 +49,25 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: ''
+                value: 'fastest'
             },
         },
         loading: false
     }
 
     orderHandler = (event) => {
+        //Prevents the request from happening which would reload the page
         event.preventDefault();
         this.setState({loading: true});
+        const formData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name:'Joe Shmoe',
-                address:{
-                    street:"1615 Pumpkinwood Ln.",
-                    city: "Poopytown",
-                    state: "MD",
-                    zipCode: "12345",
-                },
-                email:'test@test.com'
-            },
-            shipping:'overnight'
+            orderForm: formData
         };
-        console.log(order.price);
         axios.post('/orders.json', order)
             .then(response => {
                 this.setState({loading: false});
@@ -105,7 +99,7 @@ class ContactData extends Component {
             });
         }
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {formElementsArray.map(formElement => (
                     <Input 
                         key={formElement.id}
@@ -114,7 +108,7 @@ class ContactData extends Component {
                         value={formElement.config.value}
                         changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
                 ))}         
-                <Button btnType="Success" clicked={this.orderHandler}>SUBMIT ORDER</Button>
+                <Button btnType="Success">SUBMIT ORDER</Button>
             </form>);
         if (this.state.loading) {
             form = <Spinner/>;
