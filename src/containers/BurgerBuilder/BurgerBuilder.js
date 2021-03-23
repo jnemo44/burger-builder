@@ -12,7 +12,6 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actionTypes from '../../store/actions';
 
 
-
 class BurgerBuilder extends Component {
     // constructor(props) {
     //     super(props);
@@ -26,13 +25,13 @@ class BurgerBuilder extends Component {
 
     componentDidMount () {
         console.log(this.props);
-        axios.get('https://burger-builder-a412d-default-rtdb.firebaseio.com/ingredients.json')
-            .then(response => {
-                this.setState({ingredients: response.data});
-            })
-            .catch(error => {
-                this.setState({error:true});
-            });
+        // axios.get('https://burger-builder-a412d-default-rtdb.firebaseio.com/ingredients.json')
+        //     .then(response => {
+        //         this.setState({ingredients: response.data});
+        //     })
+        //     .catch(error => {
+        //         this.setState({error:true});
+        //     });
     }
 
     updatePurchaseState (ingredients) {
@@ -55,16 +54,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        const queryParams = [];
-            for (let i in this.state.ingredients) {
-                queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-            }
-            queryParams.push('price=' + this.state.totalPrice);
-            const queryString = queryParams.join('&');
-            this.props.history.push({
-                pathname: 'checkout',
-                search: '?' + queryString
-            });
+        this.props.history.push('/checkout');  
     }; 
 
     render () {
