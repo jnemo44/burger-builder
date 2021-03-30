@@ -177,9 +177,9 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        tPrice: state.totalPrice,
-        loading: state.loading
+        ings: state.bbr.ingredients,
+        tPrice: state.bbr.totalPrice,
+        loading: state.ord.loading
     };
 };
 
@@ -191,4 +191,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
