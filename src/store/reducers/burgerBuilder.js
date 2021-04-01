@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import updateObject from '../../store/utility';
+import { updateObject } from '../../store/utility';
 
 const initialState = {
     ingredients: null,
@@ -15,50 +15,49 @@ const INGREDIENT_PRICES = {
     
 }
 
-const burgerBuilderReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.ADD_INGREDIENT:
-            const updatedAIngredient = { [action.ingredientName]: state.ingredients[action.ingredientName] + 1 }
-            const updatedAIngredients = updatedObject(state.ingredients, updatedAIngredient)
-            const updatedState = {
+const addIngredient = (state, action) => {
+    const updatedAIngredient = { [action.ingredientName]: state.ingredients[action.ingredientName] + 1 }
+            const updatedAIngredients = updateObject(state.ingredients, updatedAIngredient)
+            const updatedAState = {
                 ingredients: updatedAIngredients,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             }
-            return updateObject(state, updatedState)
+    return updateObject(state, updatedAState)
+};
 
-        case actionTypes.REMOVE_INGREDIENT:
-            const updatedRIngredient = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 }
-            const updatedRIngredients = updatedObject(state.ingredients, updatedRIngredient)
-            const updatedState = {
+const removeIngredient = (state, action) => {
+    const updatedRIngredient = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 }
+            const updatedRIngredients = updateObject(state.ingredients, updatedRIngredient)
+            const updatedRState = {
                 ingredients: updatedRIngredients,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             }
-            return updateObject(state, updatedState)
+    return updateObject(state, updatedRState)
+};
 
-        case actionTypes.SET_INGREDIENTS:
-            return {
-                ...state,
-                //ingredients: action.ingredients,
-                // Specify the order of the ingredients
-                ingredients: {
-                    salad: action.ingredients.salad,
-                    bacon: action.ingredients.bacon,
-                    cheese: action.ingredients.cheese,
-                    meat: action.ingredients.meat,
-                },
-                totalPrice: 4,
-                error: false
-            };
+const setIngredients = (state, action) => {
+    return updateObject(state, {
+        //ingredients: action.ingredients,
+        // Specify the order of the ingredients
+        ingredients: {
+            salad: action.ingredients.salad,
+            bacon: action.ingredients.bacon,
+            cheese: action.ingredients.cheese,
+            meat: action.ingredients.meat,
+        },
+        totalPrice: 4,
+        error: false
+    });
+}
 
-        case actionTypes.FETCH_INGREDIENTS_FAIL:
-            return {
-                ...state,
-                error: true
-            };
 
-        default:
-            return state;
-
+const burgerBuilderReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
+        case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
+        case actionTypes.SET_INGREDIENTS: return setIngredients(state, action);
+        case actionTypes.FETCH_INGREDIENTS_FAIL: return updateObject(state, {error:true})
+        default: return state;
     }
     
 };
